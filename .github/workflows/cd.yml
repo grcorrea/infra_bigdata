@@ -23,6 +23,6 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: 22
         script: |
-          cd ~/levix/infra_bigdata/
+          cd ~/infra_bigdata/
           git pull origin master
           git status
