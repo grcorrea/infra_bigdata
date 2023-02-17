@@ -23,6 +23,10 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: 22
         script: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.PRIVATE_KEY }}"
           cd ~/infra_bigdata/
           git pull origin master
           git status
