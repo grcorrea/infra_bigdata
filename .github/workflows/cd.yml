@@ -27,3 +27,4 @@ jobs:
           git pull origin master
           git status
           docker-compose up -d
+          docker ps
