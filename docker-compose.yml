@@ -137,3 +137,18 @@ services:
       - ./postgres/postgres-db-volume:/var/lib/postgresql/data
       - ./postgres:/util
       - ./scripts:/scripts
+
+  redis:
+    restart: always
+    image: grcorrea/redis
+    container_name: redis
+    hostname: redis
+    networks:
+      - infra
+    expose:
+      - 6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
