@@ -23,3 +23,69 @@ services:
     networks:
       - infra
     command: server --console-address ":9001" /data
+
+  spark-master:
+    restart: always
+    image: grcorrea/spark-master
+    hostname: spark-master
+    networks:
+      - infra
+    container_name: spark-master
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        /usr/local/spark/sbin/start-master.sh
+        start-notebook.sh --NotebookApp.token=''
+    ports:
+      - 8889:8888
+      - 4040:4040
+      - 4041:4041
+      - 4042:4042
+      - 4043:4043
+      - 8180:8080
+      - 7077:7077
+    volumes:
+      - ./spark/util:/util/
+      - ./spark/work:/home/user 
+      - ./spark/env:/env 
+      - ./scripts:/scripts
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+
+  spark-worker:
+    restart: always
+    image: grcorrea/spark-worker
+    hostname: spark-worker
+    networks:
+      - infra
+    container_name: spark-worker
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        /usr/local/spark/sbin/start-worker.sh spark-master:7077
+        start-notebook.sh --NotebookApp.token='' 
+    env_file:
+      - ./spark/env/jupyter.env
+    ports:
+      - 5040:4040
+      - 5041:4041
+      - 5042:4042
+      - 5043:4043
+      - 8881:8081
+      - 36533:36533
+    volumes:
+      - ./spark/util:/util/
+      - ./spark/work:/home/user 
+      - ./scripts:/scripts
+    environment:
+      SPARK_MASTER: spark-master
+    depends_on:
+        - spark-master
+    deploy:
+      resources:
+        limits:
+          memory: 1g
