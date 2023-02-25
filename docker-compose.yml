@@ -57,7 +57,7 @@ services:
 
   spark-worker:
     restart: always
-    image: grcorrea/spark-worker
+    image: grcorrea/spark-master
     hostname: spark-worker
     networks:
       - infra
@@ -89,3 +89,18 @@ services:
       resources:
         limits:
           memory: 1g
+  
+  metastore:
+    restart: always
+    hostname: metastore
+    networks:
+      - infra
+    image: grcorrea/metastore
+    container_name: metastore
+    environment:
+      AWS_ACCESS_KEY_ID: datalake
+      AWS_SECRET_ACCESS_KEY: datalake
+    volumes:
+      - ./trino/conf/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
+
+  
