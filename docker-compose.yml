@@ -103,4 +103,37 @@ services:
     volumes:
       - ./trino/conf/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml:ro
 
-  
+  trino:
+    restart: always
+    image: grcorrea/trino
+    container_name: trino
+    hostname: trino
+    networks:
+      - infra
+    ports: 
+      - "8080:8080" 
+    depends_on:
+      - postgres
+      - metastore
+    volumes: 
+      - ./trino/catalog:/etc/trino/catalog  
+      - ./trino/conf:/conf
+      - ./scripts:/scripts
+
+  postgres:
+    restart: always
+    image: grcorrea/postgres
+    container_name: postgres
+    hostname: postgres
+    networks:
+      - infra
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: admin 
+    ports:
+      - 5442:5432
+    volumes:
+      - ./postgres/postgres-db-volume:/var/lib/postgresql/data
+      - ./postgres:/util
+      - ./scripts:/scripts
