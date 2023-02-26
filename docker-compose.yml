@@ -362,4 +362,25 @@ services:
         limits:
           memory: 1024m
 
+  metabase:
+    restart: always
+    image: grcorrea/metabase
+    container_name: metabase
+    hostname: metabase
+    networks:
+    - infra
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: admin
+      MB_DB_PASS: admin
+      MB_DB_HOST: postgres
+      MB_PASSWORD_COMPLEXITY: "weak"
+      MB_PASSWORD_LENGTH: 4
+
   
