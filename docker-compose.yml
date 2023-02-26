@@ -363,7 +363,7 @@ services:
           memory: 1024m
 
   metabase:
-    #restart: always
+    restart: always
     image: grcorrea/metabase
     container_name: metabase
     hostname: metabase
