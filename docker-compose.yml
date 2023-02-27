@@ -446,6 +446,8 @@ services:
     image: grcorrea/superset
     container_name: superset_app
     hostname: superset_app
+    networks:
+    - infra
     command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
     user: "root"
     restart: unless-stopped
