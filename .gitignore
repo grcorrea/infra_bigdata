@@ -3,3 +3,5 @@ minio/data/
 minio/data1/
 nifi/
 spark/work/
+superset/superset_home/
+
