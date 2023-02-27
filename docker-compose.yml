@@ -441,4 +441,24 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
+  superset:
+    env_file: ./superset/docker/env-non-dev
+    image: grcorrea/superset
+    container_name: superset_app
+    hostname: superset_app
+    command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
+    user: "root"
+    restart: unless-stopped
+    ports:
+      - 8088:8088
+    depends_on: 
+      - postgres
+      - redis
+      - trino
+    volumes: 
+      - ./superset/docker:/app/docker
+      - ./superset/superset_home:/app/superset_home
+      - ./scripts:/scripts
+
+  
   
