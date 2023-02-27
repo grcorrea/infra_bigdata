@@ -383,4 +383,62 @@ services:
       MB_PASSWORD_COMPLEXITY: "weak"
       MB_PASSWORD_LENGTH: 4
 
+  pinot-server:
+    image: grcorrea/pinot
+    command: "StartServer -zkAddress pinot-zookeeper:2181"
+    restart: unless-stopped
+    container_name: "pinot-server"
+    hostname: pinot-server
+    networks:
+    - infra
+    ports:
+      - "8098:8098"
+    environment:
+      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx16G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-server.log"
+    depends_on:
+      - pinot-broker
+      - kafka-broker
+
+  pinot-broker:
+    image: grcorrea/pinot
+    command: "StartBroker -zkAddress pinot-zookeeper:2181"
+    restart: unless-stopped
+    container_name: "pinot-broker"
+    hostname: pinot-broker
+    networks:
+    - infra
+    ports:
+      - "8099:8099"
+    environment:
+      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms4G -Xmx4G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-broker.log"
+    depends_on:
+      - pinot-controller
+
+  pinot-controller:
+    image: grcorrea/pinot
+    command: "StartController -zkAddress pinot-zookeeper:2181"
+    container_name: pinot-controller
+    hostname: pinot-controller
+    networks:
+    - infra
+    restart: unless-stopped
+    ports:
+      - "9990:9000"
+    environment:
+      JAVA_OPTS: "-Dplugins.dir=/opt/pinot/plugins -Xms1G -Xmx4G -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -Xloggc:gc-pinot-controller.log"
+    depends_on:
+      - pinot-zookeeper
+
+  pinot-zookeeper:
+    image: grcorrea/pinot-zookeeper
+    container_name: pinot-zookeeper
+    hostname: pinot-zookeeper
+    networks:
+    - infra
+    ports:
+      - "2182:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
   
