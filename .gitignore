@@ -1,7 +1,7 @@
-#postgres/
-#minio/data/
-#minio/data1/
-#nifi/
-#spark/work/
-#superset/superset_home/
+postgres/
+minio/data/
+minio/data1/
+nifi/
+spark/work/
+superset/superset_home/
 
