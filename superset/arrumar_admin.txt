@@ -1,0 +1,6 @@
+docker-compose exec superset bash /app/docker/docker-init.sh
+
+user: admin
+pass: admin
+
+docker-compose exec superset fabmanager create-admin --app superset
