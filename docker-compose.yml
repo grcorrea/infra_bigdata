@@ -183,7 +183,7 @@ services:
       KAFKA_REST_HOST_NAME: rest-proxy
       KAFKA_REST_BOOTSTRAP_SERVERS: 'kafka-broker:9092'
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
-      KAFKA_REST_SCHEMA_REGISTRY_URL:	 'http://schema-registry:8081'
+      KAFKA_REST_SCHEMA_REGISTRY_URL:	'http://schema-registry:8081'
 
   nifi:
     image: grcorrea/nifi
@@ -366,9 +366,8 @@ services:
       - "8010:8978" 
     volumes:
       - ./scripts:/scripts 
-      #- ./dbeaver:/opt/cloudbeaver/workspace 
-      #- ./dbeaver/workspace/cloudbeaver.conf:/opt/cloudbeaver/conf/cloudbeaver.conf
-      #- ./dbeaver/workspace/initial-data.conf:/opt/cloudbeaver/conf/initial-data.conf 
+      #- ./dbeaver/conf:/opt/cloudbeaver/conf
+      #- ./dbeaver/workspace:/opt/cloudbeaver/workspace
 
   trino:
     image: grcorrea/trino 
