@@ -192,9 +192,16 @@ services:
     networks:
       - infra
     volumes:
-      - ./nifi/flow:/opt/nifi/nifi-current/flowfile_repository
       - ./nifi/util:/util
+      - ./scrapy:/scrapy
       - ./scripts:/scripts
+      - ./nifi/data/conf:/opt/nifi/nifi-current/conf
+      - ./nifi/data/content_repository:/opt/nifi/nifi-current/content_repository
+      - ./nifi/data/database_repository:/opt/nifi/nifi-current/database_repository
+      - ./nifi/data/flowfile_repository:/opt/nifi/nifi-current/flowfile_repository
+      - ./nifi/data/provenance_repository:/opt/nifi/nifi-current/provenance_repository
+      - ./nifi/data/state:/opt/nifi/nifi-current/state
+      - ./nifi/data/logs:/opt/nifi/nifi-current/logs
     environment:
       NIFI_WEB_HTTP_PORT: "9090"
       SINGLE_USER_CREDENTIALS_USERNAME: "admin"
@@ -202,6 +209,8 @@ services:
     ports:
       - "9090:9090"
       - "8443:8443"
+      - "10001:10001"
+    command: pip3 install python3-scrapy -y
     deploy:
       resources:
         limits:
