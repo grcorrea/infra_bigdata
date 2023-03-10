@@ -1,0 +1,10 @@
+    "id" : {"type": "string"},
+   "titulo" : {"type": "string"},
+   "comentario" : {"type": "string"},
+   "empresa" : {"type": "string"},
+   "categoria" : {"type": "string"},
+   "produto" : {"type": "string"},
+   "problema" : {"type": "string"},
+   "local" : {"type": "string"},
+   "data" : {"type": "string"},
+   "link" : {"type": "string"}
